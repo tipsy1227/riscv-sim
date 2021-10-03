@@ -1,0 +1,29 @@
+#include <stdint.h>
+
+#pragma once
+
+#define CHAR_BIT 8
+#define SCHAR_MIN 0x80
+#define SCHAR_MAX INT8_MAX
+#define UCHAR_MAX UINT8_MAX
+#define CHAR_MIN 0
+#define CHAR_MAX UCHAR_MAX
+
+#define MB_LEN_MAX 1
+
+#define SHRT_MIN 0x8000
+#define SHRT_MAX INT16_MAX
+#define USHRT_MAX UINT16_MAX
+
+#define INT_MIN 0x80000000
+#define INT_MAX INT32_MAX
+#define UINT_MAX UINT32_MAX
+
+#define LONG_MIN 0x80000000L
+#define LONG_MAX INT32_MAX
+#define ULONG_MAX UINT32_MAX
+
+#define LLONG_MIN 0x8000000000000000LL
+#define LLONG_MAX INT64_MAX
+#define ULLONG_MAX UINT64_MAX
+
