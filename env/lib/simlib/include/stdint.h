@@ -122,12 +122,6 @@ typedef __UINTPTR_TYPE__ uintptr_t;
 #define SIG_ATOMIC_MIN __SIG_ATOMIC_MIN__
 #define SIG_ATOMIC_MAX __SIG_ATOMIC_MAX__
 
-#define WCHAR_MIN __WCHAR_MIN__
-#define WCHAR_MAX __WCHAR_MAX__
-
-#define WINT_MIN __WINT_MIN__
-#define WINT_MAX __WINT_MAX__
-
 /*
 * integer constants marcros
 */

@@ -1,27 +1,20 @@
-#include <arch.h>
-#include <stdint.h>
-#include "finisher.h"
+#include <arch/finisher.h>
+#include <drivers/sifive_test.h>
 
-static volatile uint32_t *finisher_ctrl_ptr;
+__attribute__((weak)) void *finisher_start = (void *)0x100000;
 
-/* _finisher_init: to setup the sifive_test device */
-void _finisher_init(){
-	finisher_ctrl_ptr = (uint32_t *)FINISHER_ADDR;
+/* finisher_init: setup sifive_test as a finisher */
+__attribute__((weak)) void finisher_init(){
+	sifive_test_init(finisher_start);
 }
 
-/* _finisher_exit: to stop the emulation */
-__attribute__((noreturn)) void _finisher_exit(int status){
-	if(status != 0){
-		*finisher_ctrl_ptr = (uint32_t)(status << 16 | FINISHER_FAIL);
-	} else{
-		*finisher_ctrl_ptr = (uint32_t)FINISHER_PASS;
-	}
-	__builtin_unreachable();
+/* finisher_exit: to stop the emulation */
+__attribute__((weak)) void finisher_exit(int status){
+	sifive_test_exit(status);
 }
 
-/* _finisher_reset: to restart the emulation */
-__attribute__((noreturn)) void _finisher_reset(){
-	*finisher_ctrl_ptr = FINISHER_RESET;
-	__builtin_unreachable();
+/* finisher_reset: to restart the emulation */
+__attribute__((weak)) void finisher_reset(){
+	sifive_test_reset();
 }
 

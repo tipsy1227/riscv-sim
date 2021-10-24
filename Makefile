@@ -49,21 +49,24 @@ arch_objs = $(sort $(patsubst %.c,%.o,$(patsubst %.s,%.o,$(arch_setups))))
 #
 
 .SUFFIXES:
-.PHONY: all clean run dump
+.PHONY: all clean clean-all run gdb
 
 all: $(addprefix $(module_dir)/,$(modules))
 
 clean:
-	rm -fr build
+	rm -rf $(build_dir)/bin $(build_dir)/obj/$(module_dir)
 
-run: $(module_dir)/$(target)
+clean-all:
+	rm -rf $(build_dir)
+
+run:
 	@if [ "$(target)" == "" ]; then \
 		echo "Usage: make run target=module"; \
 	else \
 		qemu-system-riscv32 -nographic -M virt -bios none -kernel $(build_dir)/bin/$(target); \
 	fi
 
-gdb: $(module_dir)/$(target)
+gdb:
 	@if [ "$(target)" == "" ]; then \
 		echo "Usage: make gdb target=module"; \
 	else \

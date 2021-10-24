@@ -1,34 +1,23 @@
-#include <arch.h>
-#include <stdint.h>
-#include "uart.h"
+#include <arch/uart.h>
+#include <drivers/ns16550a.h>
 
-static volatile uint8_t *uart_ctrl_ptr;
-static volatile uint32_t divisor;
+__attribute__((weak)) void *uart_start = (void *)0x10000000;
 
-/* _uart_init: to setup ns16550a uart device */
-void _uart_init(){
-	uart_ctrl_ptr = (uint8_t *)UART_ADDR;
-	divisor = (uint32_t)(UART_CLOCKRATE / (16 * BAUD_RATE));
-	uart_ctrl_ptr[UART_LCR] = UART_LCR_DLAB;
-	uart_ctrl_ptr[UART_DLL] = divisor & 0xff;
-	uart_ctrl_ptr[UART_DLM] = (divisor >> 8) & 0xff;
-    uart_ctrl_ptr[UART_LCR] = UART_LCR_PODD | UART_LCR_8BIT;
+/* uart_init: to setup ns16550a as uart device */
+__attribute__((weak)) void uart_init(int baudrate){
+	ns16550a_init(uart_start, baudrate);
 }
 
-/* _uart_read: to read a byte from the uart */
-int _uart_read(){
-	// wait for the data is available
-	while(!(uart_ctrl_ptr[UART_LSR] & UART_LSR_DA))
-		;
-
-	return uart_ctrl_ptr[UART_RBR];
+/* uart_read: to read a byte from the uart */
+__attribute__((weak)) int uart_read(){
+	int c = ns16550a_read();
+	if(c == '\r')
+		return '\n';
+	return c;
 }
 
-int _uart_write(int c){
-	// wait for the line is idle 
-	while (!(uart_ctrl_ptr[UART_LSR] & UART_LSR_RI))
-		;
-
-	return uart_ctrl_ptr[UART_THR] = c & 0xff;
+/* uart_write: to write a byte to the uart */
+__attribute__((weak)) int uart_write(int c){
+	return ns16550a_write(c);
 }
 
