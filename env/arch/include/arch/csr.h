@@ -2,14 +2,42 @@
 
 #include <arch/const.h>
 
-enum{
-	mstatus,
-	mie,
-	mtvec,
-	mepc,
-	mcause,
-	mip,
-};
+/* csr_read: read CSRs */
+#define csr_read(csr) ({ \
+	register int t0 asm("t0"); \
+	asm("csrr t0, "#csr";"); \
+	t0; \
+})
+
+/* csr_write: write CSRs and return the previous content */
+#define csr_write(csr, cnt) ({ \
+	__attribute__((unused)) register int t0 asm("t0") = cnt; \
+	register int t1 asm("t1"); \
+	asm( \
+		"csrrw t1, "#csr", t0;" \
+	); \
+	t1; \
+})
+
+/* csr_set: set bits in CSRs and return the previous content */
+#define csr_set(csr, cnt) ({ \
+	__attribute__((unused)) register int t0 asm("t0") = cnt; \
+	register int t1 asm("t1"); \
+	asm( \
+		"csrrs t1, "#csr", t0;" \
+	); \
+	t1; \
+})
+
+/* csr_clear: clear bits in CSRs and return the previous content */
+#define csr_clear(csr, cnt) ({ \
+	__attribute__((unused)) register int t0 asm("t0") = cnt; \
+	register int t1 asm("t1"); \
+	asm( \
+		"csrrc t1, "#csr", t0;" \
+	); \
+	t1; \
+})
 
 /* constants for mstatus register */
 enum{
@@ -68,9 +96,4 @@ enum{
 	MCAUS_SEI = MCAUS_INTR | 9,
 	MCAUS_MEI = MCAUS_INTR | 11,
 };
-
-int csr_read(int);
-int csr_write(int, int);
-int csr_set(int, int);
-int csr_clear(int, int);
 
