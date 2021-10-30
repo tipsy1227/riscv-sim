@@ -10,6 +10,7 @@ _start:
 
 	# setup trap handler
 	la t0, trap_handler
+	addi t0, t0, 1
 	csrw mtvec, t0
 
 	# set mtimecmp register to be 0

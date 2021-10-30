@@ -7,6 +7,7 @@ _start:
 
 	# setup trap handler
 	la t0, trap_handler
+	addi t0, t0, 1
 	csrw mtvec, t0
 
 	# setup finisher device
@@ -17,5 +18,5 @@ _start:
 	jal uart_init
 
 	# transfer control to thread_start
-	j thread_start
+	j cooperat_start
 

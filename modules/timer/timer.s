@@ -1,9 +1,9 @@
 .equ mtime, 0x200bff8
 .equ mtimecmp, 0x2004000
 
-.weak get_mtime
-.weak get_mtimecmp
-.weak set_mtimecmp
+.globl get_mtime
+.globl get_mtimecmp
+.globl set_mtimecmp
 
 get_mtime:
 	la t0, mtime

@@ -1,5 +1,5 @@
 .section .text.init,"ax",@progbits
-.weak _start
+.globl _start
 
 _start:
 	# setup stack pointer
@@ -17,6 +17,6 @@ _start:
 	li a0, 399193 # baudrate default to 399193
 	jal uart_init
 
-	# transfer control to simlib
-	j _simlib_start
+	# transfer control to thread_start
+	j preempt_start
 

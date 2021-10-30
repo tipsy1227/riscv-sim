@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "cooperative.h"
+#include "preemptive.h"
 
 int empty; // indicate buffer empty
 int buf;   // buffer for the character
@@ -19,7 +19,6 @@ void Producer(){
 
 			wcount = (wcount == 'Z')? 'A': wcount + 1; // update the word count
 		}
-		thread_yield(); // yield control to the Consumer
 
 		// hold a while to slow down the generate rate
 		for(int i = 0; i < delay; ++i)
@@ -35,7 +34,6 @@ void Consumer(){
 			putchar(buf);
 			empty = true;
 		}
-		thread_yield(); // yield control to the Producer
 	}
 }
 
