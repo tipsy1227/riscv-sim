@@ -9,8 +9,6 @@
 #define CHAR_MIN 0
 #define CHAR_MAX UCHAR_MAX
 
-#define MB_LEN_MAX 1
-
 #define SHRT_MIN 0x8000
 #define SHRT_MAX INT16_MAX
 #define USHRT_MAX UINT16_MAX

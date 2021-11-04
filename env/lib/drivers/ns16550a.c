@@ -1,6 +1,8 @@
 #include <drivers/ns16550a.h>
 #include <stdint.h>
 
+#define __MAC_OS
+
 enum {
 	NS16550A_CLOCKRATE = 399193, /* clock rate of NS16550A */
 
@@ -45,11 +47,20 @@ __attribute__((weak)) void ns16550a_init(void *uart_start, int baud_rate){
 
 /* ns16550a_read: to read a byte from uart */
 __attribute__((weak)) int ns16550a_read(){
+	int c;
 	// wait for the data is available
 	while(!(ns16550a_ctrl_ptr[NS16550A_LSR] & NS16550A_LSR_DA))
 		;
+	c = ns16550a_ctrl_ptr[NS16550A_RBR];
 
-	return ns16550a_ctrl_ptr[NS16550A_RBR];
+#ifdef __MAC_OS
+	if(c == '\r') // -crlf (MacOS only)
+		c = '\n';
+#endif
+
+	ns16550a_write(c); // write to the host before return it
+
+	return c;
 }
 
 /* ns16550a_write: to write a byte to uart */

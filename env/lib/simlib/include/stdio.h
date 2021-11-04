@@ -18,3 +18,10 @@ int vprintf(const char *, va_list);
 int vsprintf(char *, const char *, va_list);
 int vsnprintf(char *, size_t, const char *, va_list);
 
+int scanf(const char *, ...);
+int sscanf(const char *, const char *, ...);
+int vscanf(const char *, va_list);
+int vsscanf(const char *, const char *, va_list);
+
+int ungetchar(int); // not standard
+
