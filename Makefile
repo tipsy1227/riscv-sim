@@ -49,7 +49,7 @@ arch_objs = $(sort $(patsubst %.c,%.o,$(patsubst %.s,%.o,$(arch_setups))))
 #
 
 .SUFFIXES:
-.PHONY: all clean clean-all run gdb
+.PHONY: all clean clean-all list list-all run gdb
 
 all: $(addprefix $(module_dir)/,$(modules))
 
@@ -58,6 +58,15 @@ clean:
 
 clean-all:
 	rm -rf $(build_dir)
+
+list:
+	@echo $(modules)
+
+list-all:
+	@echo "modules:";
+	@echo $(modules);
+	@echo "libraries:";
+	@echo $(libs);
 
 run:
 	@if [ "$(target)" == "" ]; then \
